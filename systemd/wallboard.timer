@@ -1,0 +1,11 @@
+[Unit]
+Description=Run Wallboard every 5 minutes
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=5min
+Persistent=true
+Unit=wallboard.service
+
+[Install]
+WantedBy=timers.target

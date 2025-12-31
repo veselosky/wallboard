@@ -1,0 +1,51 @@
+# wallboard configuration
+
+resolution: "1920x1080"     # supported: 3840x2160, 1920x1080, 2560x1600
+columns: 3                  # fixed number of columns in the grid
+refresh_minutes: 5
+
+output:
+  path: "~/.cache/wallboard/wallpaper.png"
+  set_gnome_wallpaper: true
+
+theme:
+  name: "matrix"
+  background: "#020402"
+  foreground: "#00ff66"
+  foreground_dim: "#00aa44"
+  warning: "#ffee55"
+  alert: "#ff3355"
+  panel_border: "#00aa44"
+  font_family: "DejaVuSansMono"  # falls back if not found
+  # Optional: point to a specific font file
+  # font_path: "assets/fonts/YourMono.ttf"
+
+weather:
+  zip_code: "10001"         # used for geocoding -> Open-Meteo
+  units: "imperial"         # imperial or metric
+
+calendar:
+  source: "ics"             # "ics" or "caldav"
+  ics_path: "~/.local/share/wallboard/calendar.ics"
+  caldav_url: ""
+  caldav_username: ""
+  caldav_password: ""
+  # show events in the next N hours
+  horizon_hours: 12
+  max_events: 5
+
+dashboard:
+  # widget order is configurable; these names map to src/wallboard/widgets/*.py
+  widgets:
+    - clock
+    - weather
+    - calendar
+    - system
+
+renderer:
+  kind: "pillow"            # "pillow" or "web"
+
+web_renderer:
+  viewport_device_scale_factor: 1
+  browser: "chromium"
+  headless: true

@@ -1,0 +1,23 @@
+[Unit]
+Description=Wallboard - generate dashboard wallpaper
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+
+# IMPORTANT: set this to your wallboard project directory
+WorkingDirectory=%h/Devel/wallboard
+
+# Run via uv. This assumes uv is on your PATH when systemd runs.
+# If uv isn't found, see notes below.
+Environment=PATH=%h/.local/bin:%h/.cargo/bin:/usr/local/bin:/usr/bin:/bin
+
+ExecStart=uv run wallboard --config %h/Devel/wallboard/config.yaml
+
+# Optional: helpful env for consistent behavior
+Environment=PYTHONUNBUFFERED=1
+
+# Logging: goes to the user journal
+StandardOutput=journal
+StandardError=journal
