@@ -101,8 +101,8 @@ HTML_TEMPLATE = """<!doctype html>
         case "weather": {{
           const out = [];
           if (d.location) out.push(d.location);
-          if (d.temp != null) out.push(`Temp: ${d.temp}  Feels: ${d.feels_like}`);
-          if (d.wind != null) out.push(`Wind: ${d.wind}`);
+          if (d.temp != null) out.push(`Temp: ${{d.temp}}  Feels: ${{d.feels_like}}`);
+          if (d.wind != null) out.push(`Wind: ${{d.wind}}`);
           const t = d.hourly_time || [];
           const tt = d.hourly_temp || [];
           const pop = d.hourly_pop || [];
@@ -110,7 +110,7 @@ HTML_TEMPLATE = """<!doctype html>
             out.push("Next hours:");
             for (let i = 0; i < Math.min(6, t.length, tt.length, pop.length); i++) {{
               const hhmm = String(t[i]).slice(11, 16);
-              out.push(`${hhmm}  ${tt[i]}  POP ${pop[i]}%`);
+              out.push(`${{hhmm}}  ${{tt[i]}}  POP ${{pop[i]}}%`);
             }}
           }}
           return out;
@@ -118,14 +118,14 @@ HTML_TEMPLATE = """<!doctype html>
         case "calendar": {{
           const ev = d.events || [];
           if (!ev.length) return ["No upcoming events"];
-          return ev.map(e => `${e.time}  ${String(e.summary).slice(0, 60)}`);
+          return ev.map(e => `${{e.time}}  ${{String(e.summary).slice(0, 60)}}`);
         }}
         case "system": {{
           const out = [];
-          out.push(`CPU: ${d.cpu_pct}%`);
-          out.push(`Mem: ${d.mem_pct}% (${d.mem_used_gb} / ${d.mem_total_gb} GB)`);
+          out.push(`CPU: ${{d.cpu_pct}}%`);
+          out.push(`Mem: ${{d.mem_pct}}% (${{d.mem_used_gb}} / ${{d.mem_total_gb}} GB)`);
           for (const dk of (d.disks || [])) {{
-            out.push(`Disk ${dk.mount}: ${dk.pct}% (free ${dk.free_gb} GB)`);
+            out.push(`Disk ${{dk.mount}}: ${{dk.pct}}% (free ${{dk.free_gb}} GB)`);
           }}
           return out;
         }}
