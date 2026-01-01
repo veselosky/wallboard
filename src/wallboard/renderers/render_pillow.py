@@ -53,7 +53,7 @@ def _scanlines(img: Image.Image, strength: int = 18) -> Image.Image:
         d.rectangle([0, y, w, y+1], fill=(0, 0, 0, strength))
     return Image.alpha_composite(img.convert("RGBA"), overlay)
 
-def _draw_glow_text(draw: ImageDraw.ImageDraw, xy: tuple[int, int], text: str, font, fill_rgb, glow_rgb, glow_radius: int = 8):
+def _draw_glow_text(img: Image.Image, draw: ImageDraw.ImageDraw, xy: tuple[int, int], text: str, font, fill_rgb, glow_rgb, glow_radius: int = 8):
     # Render glow on a temp layer and blur it
     x, y = xy
     # Create small temp image around text
@@ -63,8 +63,8 @@ def _draw_glow_text(draw: ImageDraw.ImageDraw, xy: tuple[int, int], text: str, f
     td = ImageDraw.Draw(tmp)
     td.text((pad, pad), text, font=font, fill=(*glow_rgb, 120))
     tmp = tmp.filter(ImageFilter.GaussianBlur(radius=glow_radius))
-    # Paste glow then crisp text on main image
-    draw.im.alpha_composite(tmp, dest=(x - pad, y - pad))
+    # Paste glow (with alpha) then crisp text on main image
+    img.paste(tmp, (x - pad, y - pad), tmp)
     draw.text((x, y), text, font=font, fill=fill_rgb)
 
 def render(
@@ -105,7 +105,7 @@ def render(
         # Header
         header = res.title
         header_color = fg if res.ok else alert
-        _draw_glow_text(draw, (x0 + 16, y0 + 12), header, font_h, header_color, fg, glow_radius=6)
+        _draw_glow_text(img, draw, (x0 + 16, y0 + 12), header, font_h, header_color, fg, glow_radius=6)
 
         # Body lines
         lines: list[str] = []
